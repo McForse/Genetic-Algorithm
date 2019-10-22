@@ -181,18 +181,16 @@ bool GeneticAlgorithm::checkPopulation() {
 void GeneticAlgorithm::outputPopulation() {
 	std::cout << std::endl;
 	std::cout << "X:\t";
-	for (unsigned int i = 0; i < populationSize; i++) {
+	for (unsigned int i = 0; i < populationSize; i++)
 		std::cout << population[i].x << "\t";
-	}
 	std::cout << std::endl;
 	std::cout << "Y:\t";
-	for (unsigned int i = 0; i < populationSize; i++) {
+	for (unsigned int i = 0; i < populationSize; i++)
 		std::cout << population[i].y << "\t";
-	}
 	std::cout << std::endl;
 	std::cout << "Z:\t";
-	for (unsigned int i = 0; i < populationSize; i++) {
-		std::cout << population[i].fitness << "\t";
-	}
+	for (unsigned int i = 0; i < populationSize; i++)
+		if (!maximization) std::cout << -1 * population[i].fitness << "\t";
+		else std::cout << population[i].fitness << "\t";
 	std::cout << std::endl;
 }
