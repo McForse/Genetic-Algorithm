@@ -1,2 +1,2 @@
 
-Copyright (C) 2019 McForse
+Copyright (C) 2019 Danil Vorozheykin

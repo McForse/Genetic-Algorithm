@@ -3,4 +3,4 @@ project(Genetic-Algorithm)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(GA Main.cpp GeneticAlgorithm.cpp)
+add_executable(GA Main.cpp GeneticAlgorithm.cpp Chromosome.h)

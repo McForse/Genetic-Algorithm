@@ -4,20 +4,26 @@ GeneticAlgorithm::GeneticAlgorithm() {
 	srand(time(nullptr));
 }
 
-GeneticAlgorithm::GeneticAlgorithm(bool isMaximization, unsigned int population, unsigned int generations, bool isTwoChild, double mutationProb, double crossoverProb, unsigned int randomLimit) {
-	maximization = isMaximization;
-	populationSize = population;
-	generationsCount = generations;
-	twoChild = isTwoChild;
-	mutationRate = mutationProb;
-	crossoverRate = crossoverProb;
-	randLimit = randomLimit;
+GeneticAlgorithm::GeneticAlgorithm(SearchType searchType, bool genMode, unsigned int populationSize,
+								   unsigned int generationsCount, bool twoChild, double mutationRate,
+								   double crossoverRate, unsigned int randLimit) {
+	setSearchType(searchType);
+	setGenMode(genMode);
+	setPopulationSize(populationSize);
+	setGenerationsCount(generationsCount);
+	setTwoChild(twoChild);
+	setMutationRate(mutationRate);
+	setCrossoverRate(crossoverRate);
+	setRandLimit(randLimit);
 }
 
 double GeneticAlgorithm::random() {
 	return rand() / (RAND_MAX + 1.0);
 }
 
+/**
+ * @callgraph
+ */
 void GeneticAlgorithm::start() {
 	createPopulation();
 	rankPopulation();
@@ -50,6 +56,10 @@ void GeneticAlgorithm::createPopulation() {
 	}
 }
 
+
+/**
+ * @callgraph
+ */
 void GeneticAlgorithm::rankPopulation() {
 	fitnessChromosomes();
 	sortChromosomes();
@@ -63,6 +73,9 @@ void GeneticAlgorithm::rankPopulation() {
 	}
 }
 
+/**
+ * @callgraph
+ */
 void GeneticAlgorithm::fitnessChromosomes() {
 	totalFitness = 0.0;
 
@@ -91,10 +104,13 @@ void GeneticAlgorithm::sortChromosomes() {
 	}
 }
 
+/**
+ * @callgraph
+ */
 void GeneticAlgorithm::createNextGeneration() {
 	nextPopulation.clear();
 
-	for (unsigned int i = 0; i < populationSize; i += 1 + (int)twoChild) {
+	for (unsigned int i = 0; i < populationSize; i += 1 + (int) twoChild) {
 		unsigned int parent1 = rouletteSelection();
 		unsigned int parent2 = rouletteSelection();
 
@@ -105,6 +121,9 @@ void GeneticAlgorithm::createNextGeneration() {
 	nextPopulation.swap(population);
 }
 
+/**
+ * @callgraph
+ */
 unsigned int GeneticAlgorithm::rouletteSelection() {
 	double randomFitness = random() * totalFitness;
 	unsigned int id = populationSize;
@@ -124,6 +143,9 @@ unsigned int GeneticAlgorithm::rouletteSelection() {
 	return id;
 }
 
+/**
+ * @callgraph
+ */
 void GeneticAlgorithm::crossover(Chromosome parent1, Chromosome parent2) {
 	Chromosome child1;
 
@@ -158,7 +180,7 @@ void GeneticAlgorithm::crossover(Chromosome parent1, Chromosome parent2) {
 	nextPopulation.push_back(child1);
 }
 
-void GeneticAlgorithm::mutation(Chromosome& g) {
+void GeneticAlgorithm::mutation(Chromosome &g) {
 	if (random() < mutationRate) {
 		g.x = (g.x + random()) / 2.0;
 	}
@@ -190,7 +212,39 @@ void GeneticAlgorithm::outputPopulation() {
 	std::cout << std::endl;
 	std::cout << "Z:\t";
 	for (unsigned int i = 0; i < populationSize; i++)
-		if (!maximization) std::cout << -1 * population[i].fitness << "\t";
+		if (!searchType) std::cout << -1 * population[i].fitness << "\t";
 		else std::cout << population[i].fitness << "\t";
 	std::cout << std::endl;
+}
+
+void GeneticAlgorithm::setSearchType(SearchType searchType) {
+	this->searchType = searchType;
+}
+
+void GeneticAlgorithm::setGenMode(bool genMode) {
+	this->genMode = genMode;
+}
+
+void GeneticAlgorithm::setPopulationSize(unsigned int populationSize) {
+	this->populationSize = populationSize;
+}
+
+void GeneticAlgorithm::setGenerationsCount(unsigned int generationsCount) {
+	this->generationsCount = generationsCount;
+}
+
+void GeneticAlgorithm::setTwoChild(bool twoChild) {
+	this->twoChild = twoChild;
+}
+
+void GeneticAlgorithm::setMutationRate(double mutationRate) {
+	this->mutationRate = mutationRate;
+}
+
+void GeneticAlgorithm::setCrossoverRate(double crossoverRate) {
+	this->crossoverRate = crossoverRate;
+}
+
+void GeneticAlgorithm::setRandLimit(unsigned int randLimit) {
+	this->randLimit = randLimit;
 }
